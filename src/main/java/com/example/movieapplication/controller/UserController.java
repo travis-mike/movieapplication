@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class UserController {
@@ -20,7 +21,7 @@ public class UserController {
     }
 
     @GetMapping("/register")
-    public String showSignupForm(Model model){
+    public String registrationForm(Model model){
         model.addAttribute("user", new User());
         return "register";
     }
@@ -30,7 +31,12 @@ public class UserController {
         String hash = passwordEncoder.encode(user.getPassword());
         user.setPassword(hash);
         users.save(user);
-        return "redirect:/login";
+        return "redirect:register/movies";
+    }
+
+    @RequestMapping("register/movies")
+    public String userSelectsFilms(@ModelAttribute User user) {
+
     }
 }
 

@@ -4,13 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MovieListWrapper {
-    List<Movie> movieList = new ArrayList<>();
 
-    public List<Movie> getMovieList() {
-        return movieList;
+    private List<Long> movieIdList = new ArrayList<>();
+
+    public MovieListWrapper (List<Long> movieIdList) {
+        this.movieIdList = movieIdList;
     }
 
-    public void setMovieList(List<Movie> movieList) {
-        this.movieList = movieList;
+    public List<Long> getMovieIdList() {
+        return movieIdList;
+    }
+
+    public void setMovieIdList(List<Long> movieIdList) {
+        this.movieIdList = movieIdList;
     }
 }
+
+
+

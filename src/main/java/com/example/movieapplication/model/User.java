@@ -1,5 +1,6 @@
 package com.example.movieapplication.model;
 
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +25,8 @@ public class User {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_movies", joinColumns = @JoinColumn(name = "id"),
-            inverseJoinColumns = @JoinColumn(name = "movie_id") )
-    private List<Movie> userMovieList;
+            inverseJoinColumns = @JoinColumn(name = "movie_id"))
+    private List<Movie> userMovieList = new ArrayList<>();
 
     public User() {
     }
@@ -43,7 +44,7 @@ public class User {
         this.password = password;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -79,7 +80,7 @@ public class User {
         return userMovieList;
     }
 
-    public void setUserMovieList(MovieListWrapper movieList) {
-        userMovieList.addAll(movieList.getMovieList());
+    public void setUserMovieList(Movie test) {
+        userMovieList.add(test);
     }
 }

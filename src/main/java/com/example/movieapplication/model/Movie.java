@@ -23,11 +23,14 @@ public class Movie {
     @Transient
     private MovieScore movieScore;
 
-    public Movie(MovieScore movieScore) {
-        this.movieScore = movieScore;
+
+    public Movie () {
     }
 
-    public Movie() {
+    public Movie(String title, String description, String genre) {
+        this.title = title;
+        this.description = description;
+        this.genre = genre;
     }
 
     public Long getId() {

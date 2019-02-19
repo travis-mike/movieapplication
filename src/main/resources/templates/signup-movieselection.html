@@ -7,7 +7,7 @@
 <body>
 <form id="my-form" th:action="@{/register/movies}" method="POST" th:each="movie : ${movieSignUpList}">
     <div id="container">
-    <input type="checkbox" th:name="movieList" th:value="${movie}" th:text="*{movie.title}" />
+    <input type="checkbox" th:name="movieIdList" th:value="${movie.id}" th:text="*{movie.title}" />
     </div>
 </form>
 <input value="Finish signing up!" type="submit" form="my-form"/>

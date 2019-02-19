@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -56,11 +57,13 @@ public class UserController {
     }
 
     @PostMapping("register/movies")
-    public String userFilmsPost(Model model, @ModelAttribute (value="movieList") @Valid MovieListWrapper movieList,
-                                BindingResult movieListResult) {
-        //System.out.println(user.toString());
+    public String userFilmsPost(@RequestParam ("movieIdList") Long[] movieIdList) {
+        //List<Movie> movieStarterList = new ArrayList<>();
+        //List<Long> movieIdStarter = new ArrayList<>(Arrays.asList(movieIdList));
         User user = transporter.getUser();
-        user.setUserMovieList(movieList);
+        Movie testMovie = movies.findById(movieIdList[0]).get();
+        System.out.println(testMovie.getDescription());
+        user.setUserMovieList(testMovie);
         users.save(user);
         return "redirect:/login";
     }

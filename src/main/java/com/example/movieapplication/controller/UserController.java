@@ -1,7 +1,6 @@
 package com.example.movieapplication.controller;
 
 import com.example.movieapplication.model.Movie;
-import com.example.movieapplication.model.MovieListWrapper;
 import com.example.movieapplication.model.User;
 import com.example.movieapplication.model.UserTransporter;
 import com.example.movieapplication.repository.Movies;
@@ -9,7 +8,6 @@ import com.example.movieapplication.repository.Users;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -62,8 +60,10 @@ public class UserController {
         //List<Long> movieIdStarter = new ArrayList<>(Arrays.asList(movieIdList));
         User user = transporter.getUser();
         Movie testMovie = movies.findById(movieIdList[0]).get();
+        Movie testMovie2 = movies.findById(movieIdList[1]).get();
         System.out.println(testMovie.getDescription());
         user.setUserMovieList(testMovie);
+        user.setUserMovieList(testMovie2);
         users.save(user);
         return "redirect:/login";
     }

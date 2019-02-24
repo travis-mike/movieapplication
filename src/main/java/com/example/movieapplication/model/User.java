@@ -26,9 +26,34 @@ public class User {
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "user_movies", joinColumns = @JoinColumn(name = "id"),
             inverseJoinColumns = @JoinColumn(name = "movie_id"))
-    private List<Movie> userMovieList = new ArrayList<>();
+    private List<Movie> userMovieList;
+
+    @Column
+    private int horrorPoints;
+
+    @Column
+    private int dramaPoints;
+
+    @Column
+    private int comedyPoints;
+
+    @Column
+    private int romancePoints;
+
+    @Column
+    private int sciFiPoints;
+
+    @Column
+    private int bank;
 
     public User() {
+        this.horrorPoints = 0;
+        this.dramaPoints = 0;
+        this.comedyPoints = 0;
+        this.romancePoints = 0;
+        this.sciFiPoints = 0;
+        this.userMovieList = new ArrayList<>();
+        this.bank = 40;
     }
 
     public User(User copy) {
@@ -36,6 +61,13 @@ public class User {
         email = copy.email;
         username = copy.username;
         password = copy.password;
+        userMovieList = copy.userMovieList;
+        horrorPoints = copy.horrorPoints;
+        dramaPoints = copy.dramaPoints;
+        comedyPoints = copy.comedyPoints;
+        romancePoints = copy.romancePoints;
+        sciFiPoints = copy.sciFiPoints;
+        bank = copy.bank;
     }
 
     public User(String username, String email, String password) {
@@ -82,5 +114,21 @@ public class User {
 
     public void setUserMovieList(Movie test) {
         userMovieList.add(test);
+    }
+
+    public void setInitialGenrePoints (List <Movie> movieList) {
+        for (Movie movie : movieList) {
+            if (movie.getGenre().equals("horror")) {
+                this.horrorPoints++;
+            } else if (movie.getGenre().equals("drama")) {
+                this.dramaPoints++;
+            } else if (movie.getGenre().equals("comedy")) {
+                this.comedyPoints++;
+            } else if (movie.getGenre().equals("romance")) {
+                this.romancePoints++;
+            } else if (movie.getGenre().equals("scifi")) {
+                this.sciFiPoints++;
+            }
+        }
     }
 }

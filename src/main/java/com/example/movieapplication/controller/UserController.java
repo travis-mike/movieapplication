@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,17 +51,20 @@ public class UserController {
 
     @PostMapping("register/movies")
     public String userFilmsPost(@RequestParam ("movieIdList") Long[] movieIdList) {
-        //List<Movie> movieStarterList = new ArrayList<>();
+        List<Movie> movieStarterList = new ArrayList<>();
         //List<Long> movieIdStarter = new ArrayList<>(Arrays.asList(movieIdList));
         User user = transporter.getUser();
         Movie testMovie = movies.findById(movieIdList[0]).get();
         Movie testMovie2 = movies.findById(movieIdList[1]).get();
-        System.out.println(testMovie.getDescription());
+        movieStarterList.add(testMovie);
+        movieStarterList.add(testMovie2);
         user.setUserMovieList(testMovie);
         user.setUserMovieList(testMovie2);
+        user.setInitialGenrePoints(movieStarterList);
         users.save(user);
         return "redirect:/login";
     }
+
 }
 
 

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <!-- ... -->
 <head>
     <meta charset="UTF-8" />
     <title>Log In</title>
 </head>
 <body>
+<div sec:authorize="isAuthenticated()">
 <nav>
     <ul>
         <!-- More links here... -->
@@ -17,9 +18,11 @@
         </li>
     </ul>
 </nav>
-<div sec:authorize="isAuthenticated()">
-    Logged user: <span sec:authentication="name"></span>
-    <span th:text="${user.email}"></span>
+    <!--Logged user: <span sec:authentication="name">test</span>-->
+    User ID: <span th:text="${#authentication.principal.id}"/>
+    Username: <span th:text="${#authentication.principal.username}"/>
+    Email: <span th:text="${#authentication.principal.email}"/>
+    <!--<span th:text="${user.email}"></span>-->
 </div>
 
 These are words

@@ -46,15 +46,6 @@ public class User {
     @Column
     private int bank;
 
-    public User() {
-        this.horrorPoints = 0;
-        this.dramaPoints = 0;
-        this.comedyPoints = 0;
-        this.romancePoints = 0;
-        this.sciFiPoints = 0;
-        this.userMovieList = new ArrayList<>();
-        this.bank = 40;
-    }
 
     public User(User copy) {
         id = copy.id; // This line is SUPER important! Many things won't work if it's absent
@@ -68,6 +59,16 @@ public class User {
         romancePoints = copy.romancePoints;
         sciFiPoints = copy.sciFiPoints;
         bank = copy.bank;
+    }
+
+    public User() {
+        this.horrorPoints = 0;
+        this.dramaPoints = 0;
+        this.comedyPoints = 0;
+        this.romancePoints = 0;
+        this.sciFiPoints = 0;
+        this.userMovieList = new ArrayList<>();
+        this.bank = 40;
     }
 
     public User(String username, String email, String password) {

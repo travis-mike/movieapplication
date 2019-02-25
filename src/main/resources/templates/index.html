@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<!-- ... -->
+<head>
+    <meta charset="UTF-8" />
+    <title>Log In</title>
+</head>
+<body>
+<div sec:authorize="isAuthenticated()">
+<nav>
+    <ul>
+        <!-- More links here... -->
+        <li>
+            <form th:action="@{/logout}" th:method="post">
+                <button class="btn-link btn" style="margin-top: 8px">Logout</button>
+            </form>
+        </li>
+    </ul>
+</nav>
+    <!--Logged user: <span sec:authentication="name">test</span>-->
+    Username: <span th:text="${#authentication.principal.username}"/>
+    <!--<span th:text="${user.email}"></span>-->
+</div>
+
+These are words
+</body>

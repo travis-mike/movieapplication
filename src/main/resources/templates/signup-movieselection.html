@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Sign up</title>
+</head>
+<body>
+<form id="my-form" th:action="@{/register/movies}" method="POST">
+<ul>
+    <li th:each="movie : ${movieSignUpList}">
+        <tr>
+            <td>
+        <input type="checkbox" th:name="movieIdList" th:value="${movie.id}" th:text="${movie.title}">
+            </td>
+        </tr>
+    </li>
+</ul>
+</form>
+<input value="Finish signing up!" type="submit" form="my-form"/>
+</body>
+</html>

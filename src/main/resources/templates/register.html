@@ -1,109 +1,22 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Filmster</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link href="../static/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
+    <meta charset="UTF-8" />
+    <title>Sign up</title>
 </head>
 <body>
+<h1>Create an account</h1>
+<form th:action="@{/register}" method="POST" th:object="${user}">
+    <label for="username">Username</label>
+    <input id="username" th:field="*{username}" />
 
-        <!--   navbar   -->
+    <label for="email">Email</label>
+    <input id="email" th:field="*{email}" />
 
-    <nav class="conatiner-fluid sticky-top navbar navbar-light navbar-expand-lg bg-light">
-        <a class="navbar-brand" href="#">Filmster</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="mainNav">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="#">Home <span class="sr-only">(current)</span></a>
-            </div>
-            <div class="col d-flex nav navbar-nav justify-content-end">
-                <a class="nav-link" href="#"><i class="fas fa-user"></i>
-                    Sign up
-                </a>
-                <a class="nav-link" href="#">
-                    <i class="fas fa-sign-in"></i>
-                    Login
-                </a>
-            </div>
-        </div>
-    </nav>
+    <label for="password">Password</label>
+    <input id="password" type="password" th:field="*{password}" />
 
-    <!--   main section   -->
-
-    <main class="container-fluid">
-
-        <!--   header   -->
-
-        <header class="row">
-            <div class=" jumbotron jumbotron-fluid px-2">
-                <h1 class="col-12 d-flex justify-content-end display-1 ml-lg-auto">Filmster</h1>
-                <p class="col-12 d-flex  justify-content-end lead ml-lg-auto">A movie experience</p>
-            </div>
-        </header>
-
-        <!--   registration form   -->
-
-        <div class="container">
-            <form class="my-5">
-                <div class="row">
-                    <div class="col form-group">
-                        <label for="email"></label>
-                        <input type="email" class="form-control" id="email" aria-describedby="emailHelp" placeholder="enter email">
-                        <small id="emailHelp" class="form-text text-muted">You're info is safe with us!</small>
-                    </div>
-                    <div class="col form-group">
-                        <label for="username"></label>
-                        <input type="text" class="form-control" id="username" aria-descibedby="usernamehelp" placeholder="create a username">
-                        <small id="usernamehelp" class="form-text text-muted">This is what other users will see.</small>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col form-group">
-                        <label for="password"></label>
-                        <input type="password" class="form-control" id="password" placeholder="password">
-                    </div>
-                    <div class="col form-group">
-                        <label for="confirm"></label>
-                        <input type="password" class="form-control" id="confirm" placeholder="confirm password">
-                    </div>
-                </div>
-                <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="newsletter" checked>
-                    <label class="form-check-label" for="newsletter">Sign up for our newsletter!</label>
-                </div>
-                <button type="submit" class="btn btn-primary mt-3">Submit</button>
-            </form>
-        </div>
-    </main>
-
-    <!--   footer   -->
-
-    <footer class="row bg-dark">
-        <div class="col d-flex justify-content-center align-items-center text-light mb-0">
-            © 2019 Filmster. All right reserved
-        </div>
-        <div class="col d-flex justify-content-center align-items-center">
-            <a href="#" class="d-flex col">
-                <i class="fab fa-twitter fa-3x"></i>
-            </a>
-            <a href="#"class="col d-flex">
-                <i class="fab fa-facebook fa-3x"></i>
-            </a>
-            <a href="#"class="col d-flex">
-                <i class="fab fa-instagram fa-3x"></i>
-            </a>
-        </div>
-    </footer>
-
-
-    <!--   bootstrap js and jquery libraries-->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <input value="Sign me up!" type="submit" />
+</form>
 </body>
 </html>

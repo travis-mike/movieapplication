@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -33,21 +34,26 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public String saveUser(@ModelAttribute User user) {
+    public String registrationPost (@ModelAttribute User user) {
         String hash = passwordEncoder.encode(user.getPassword());
         user.setPassword(hash);
         transporter.setUser(user);
         return "redirect:register/movies";
     }
 
+    //code refactored to take in iterated list. this is technically done. only update we need to make
+    // is to insert correct movies from database. this will be a constant
+
     @GetMapping("register/movies")
     public String userSelectsFilms(Model model) {
-        List<Movie> movieStarters = new ArrayList<>();
-        movieStarters.add(movies.findById(1L).get());
-        movieStarters.add(movies.findById(2L).get());
+        List<Long> movieLongList = new ArrayList<Long>(Arrays.asList(1L, 2L));
+        Iterable<Movie> movieStarters = movies.findAllById(movieLongList);
         model.addAttribute("movieSignUpList", movieStarters);
-        return "signup-movieselection";
+        return "register-movies";
     }
+
+    // still need to rewrite this code to find all by id in movieIdList and insert into StarterList
+    // to insert into user object and save
 
     @PostMapping("register/movies")
     public String userFilmsPost(@RequestParam ("movieIdList") Long[] movieIdList) {

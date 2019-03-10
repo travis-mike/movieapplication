@@ -2,18 +2,18 @@ package com.example.movieapplication.controller;
 
 import com.example.movieapplication.model.Movie;
 import com.example.movieapplication.model.User;
+import org.hibernate.Hibernate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class ProfileController {
 
-    //Need to figure out how to iterate through collection without causing lazyloader error
+    //need to figure out how to iterate through collection without causing lazyloader error
 
         @RequestMapping("/profile")
         public String secureHomePage(Model model) {
@@ -21,10 +21,9 @@ public class ProfileController {
             if (user == null) {
                 return "redirect:/login";
             }
-            model.addAttribute("user", user);
-            List<Movie> testList = new ArrayList<>();
-            testList = user.getUserMovieList();
-            model.addAttribute("testList", testList);
+            List<Movie> movieList = user.getUserMovieList();
+            Hibernate.initialize(movieList);
+            model.addAttribute("movieList", movieList);
                 return "profile";
         }
     }

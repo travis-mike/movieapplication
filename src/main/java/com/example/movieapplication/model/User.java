@@ -113,8 +113,8 @@ public class User {
         return userMovieList;
     }
 
-    public void setUserMovieList(Movie test) {
-        userMovieList.add(test);
+    public void setUserMovieList(List<Movie> movieList) {
+        this.userMovieList = movieList;
     }
 
     public void setInitialGenrePoints (List <Movie> movieList) {

@@ -57,16 +57,21 @@ public class UserController {
 
     @PostMapping("register/movies")
     public String userFilmsPost(@RequestParam ("movieIdList") Long[] movieIdList) {
-        List<Movie> movieStarterList = new ArrayList<>();
-        //List<Long> movieIdStarter = new ArrayList<>(Arrays.asList(movieIdList));
         User user = transporter.getUser();
-        Movie testMovie = movies.findById(movieIdList[0]).get();
-        Movie testMovie2 = movies.findById(movieIdList[1]).get();
-        movieStarterList.add(testMovie);
-        movieStarterList.add(testMovie2);
-        user.setUserMovieList(testMovie);
-        user.setUserMovieList(testMovie2);
+        List<Movie> movieStarterList = new ArrayList<>();
+        List<Long> movieIdStarter = new ArrayList<>(Arrays.asList(movieIdList));
+        Iterable<Movie> movieIterable = movies.findAllById(movieIdStarter);
+        for (Movie movie : movieIterable) {
+            movieStarterList.add(movie);
+        }
+//        Movie testMovie = movies.findById(movieIdList[0]).get();
+//        Movie testMovie2 = movies.findById(movieIdList[1]).get();
+//        movieStarterList.add(testMovie);
+//        movieStarterList.add(testMovie2);
+//        user.setUserMovieList(testMovie);
+//        user.setUserMovieList(testMovie2);
         user.setInitialGenrePoints(movieStarterList);
+        user.setUserMovieList(movieStarterList);
         users.save(user);
         return "redirect:/login";
     }

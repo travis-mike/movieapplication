@@ -54,6 +54,7 @@ public class UserController {
 
     // still need to rewrite this code to find all by id in movieIdList and insert into StarterList
     // to insert into user object and save
+    //UPDATE: code has been rewritten to do just this. cleaner.
 
     @PostMapping("register/movies")
     public String userFilmsPost(@RequestParam ("movieIdList") Long[] movieIdList) {
@@ -64,12 +65,6 @@ public class UserController {
         for (Movie movie : movieIterable) {
             movieStarterList.add(movie);
         }
-//        Movie testMovie = movies.findById(movieIdList[0]).get();
-//        Movie testMovie2 = movies.findById(movieIdList[1]).get();
-//        movieStarterList.add(testMovie);
-//        movieStarterList.add(testMovie2);
-//        user.setUserMovieList(testMovie);
-//        user.setUserMovieList(testMovie2);
         user.setInitialGenrePoints(movieStarterList);
         user.setUserMovieList(movieStarterList);
         users.save(user);

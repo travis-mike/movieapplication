@@ -1,6 +1,8 @@
 package com.example.movieapplication.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="movies")
@@ -22,6 +24,9 @@ public class Movie {
 
     @Transient
     private MovieScore movieScore;
+
+    @ManyToMany(mappedBy = "userMovieList")
+    private List<User> users = new ArrayList<>();
 
 
     public Movie () {

@@ -32,7 +32,8 @@ public class Movie {
     public Movie () {
     }
 
-    public Movie(String title, String description, String genre) {
+    public Movie(Long id, String title, String description, String genre) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.genre = genre;

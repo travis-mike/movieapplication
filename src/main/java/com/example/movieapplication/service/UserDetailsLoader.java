@@ -1,6 +1,5 @@
 package com.example.movieapplication.service;
 
-import com.example.movieapplication.model.Movie;
 import com.example.movieapplication.model.User;
 import com.example.movieapplication.model.UserWithRoles;
 import com.example.movieapplication.repository.Users;
@@ -11,7 +10,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.List;
 
 @Service
 public class UserDetailsLoader implements UserDetailsService {

@@ -9,7 +9,6 @@ import java.util.List;
 public class Movie {
 
     @Id
-    @GeneratedValue
     @Column(name = "movie_id")
     private Long id;
 

@@ -9,6 +9,6 @@
 <h2>Movie Score</h2>
 <h2 th:text="${movie.genre}">movie genre</h2>
 <p th:text="${movie.description}">blah blah blah</p>
-<img src="https://image.tmdb.org/t/p/w185/" + th:text="${movie.posterUrl}">
+<img th:src="@{'https://image.tmdb.org/t/p/w185' + ${movie.posterUrl}}">
 </body>
 </html>

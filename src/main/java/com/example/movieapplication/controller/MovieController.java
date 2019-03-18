@@ -30,6 +30,7 @@ public class MovieController {
 
         String[] movieUrlStringArray = movie.split("-");
         Long movieUrlLongId = Long.parseLong(movieUrlStringArray[0]);
+        System.out.println(movieUrlLongId);
         Optional<Movie> foundOptionalMovie = movies.findById(movieUrlLongId);
 
         if (!foundOptionalMovie.isPresent()) {
@@ -44,6 +45,7 @@ public class MovieController {
             JSONObject movieObject = jsonNodeHttpResponse.getBody().getObject();
             Integer movieIdInt = movieObject.getInt("id");
             Long movieId = Long.parseLong(movieIdInt.toString());
+            System.out.println(movieId);
             String movieImageUrl = movieObject.getString("poster_path");
             String movieTitle = movieObject.getString("title");
             String movieDescription = movieObject.getString("overview");
@@ -57,6 +59,7 @@ public class MovieController {
         } else {
 
             Movie foundMovie = foundOptionalMovie.get();
+            System.out.println(foundMovie.getDescription());
             model.addAttribute("movie", foundMovie);
             return "movie-page";
 

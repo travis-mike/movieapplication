@@ -22,21 +22,32 @@ public class Movie {
     @Column
     private String genre;
 
+    @Column
+    private String posterUrl;
+
     @Transient
     private MovieScore movieScore;
 
     @ManyToMany(mappedBy = "userMovieList")
     private List<User> users = new ArrayList<>();
 
-
     public Movie () {
     }
 
-    public Movie(Long id, String title, String description, String genre) {
+    public Movie(Long id, String title, String description, String genre, String posterUrl) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.genre = genre;
+        this.posterUrl = posterUrl;
+    }
+
+    public String getPosterUrl() {
+        return posterUrl;
+    }
+
+    public void setPosterUrl(String posterUrl) {
+        this.posterUrl = posterUrl;
     }
 
     public Long getId() {

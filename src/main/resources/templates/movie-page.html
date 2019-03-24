@@ -1,14 +1,33 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8" />
     <title>Sign up</title>
 </head>
 <body>
+<div sec:authorize="isAuthenticated()">
+    <nav>
+        <ul>
+            <!-- More links here... -->
+            <li>
+                <form th:action="@{/logout}" th:method="post">
+                    <button class="btn-link btn" style="margin-top: 8px">Logout</button>
+                </form>
+            </li>
+        </ul>
+    </nav>
+    <!--Logged user: <span sec:authentication="name">test</span>-->
+    Username: <span id="username-field" th:text="${#authentication.principal.username}"/>
+    <!--<span th:text="${user.email}"></span>-->
+</div>
 <h1 th:text="${movie.title}">movie title</h1>
+<h6 id = "movie-id" th:text="${movie.id}" hidden></h6>
 <h2>Movie Score</h2>
-<!--<h2 th:text="${movie.genre}">movie genre</h2>-->
-<p th:text="${movie.description}">blah blah blah</p>
+<h2 th:text="${movie.genre}">movie genre</h2>
+<p th:text="${movie.description}"></p>
 <img th:src="@{'https://image.tmdb.org/t/p/w185' + ${movie.posterUrl}}">
+<button id="add-to-favorites">Add to favorites list</button>
+<script type="text/javascript" th:src="@{/movie-script.js}"></script>
 </body>
 </html>

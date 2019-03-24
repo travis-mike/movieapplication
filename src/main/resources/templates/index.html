@@ -19,6 +19,7 @@
     </ul>
 </nav>
     <!--Logged user: <span sec:authentication="name">test</span>-->
+    User ID: <span id ="userId" th:text="${#authentication.principal.id}"/>
     Username: <span th:text="${#authentication.principal.username}"/>
     <!--<span th:text="${user.email}"></span>-->
 </div>

@@ -35,6 +35,11 @@ public class UserDetailsLoader implements UserDetailsService {
         Hibernate.initialize(user.getUserMovieList());
         return user;
     }
+
+    public User saveUser(User user) {
+        return users.save(user);
+    }
+
 }
 
 

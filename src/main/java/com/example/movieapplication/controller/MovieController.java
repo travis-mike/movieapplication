@@ -45,11 +45,10 @@ public class MovieController {
             JSONObject movieObject = jsonNodeHttpResponse.getBody().getObject();
             Integer movieIdInt = movieObject.getInt("id");
             Long movieId = Long.parseLong(movieIdInt.toString());
-            System.out.println(movieId);
             String movieImageUrl = movieObject.getString("poster_path");
             String movieTitle = movieObject.getString("title");
             String movieDescription = movieObject.getString("overview");
-            String movieGenre = movieObject.getJSONArray("genres").getJSONObject(1).toString();
+            String movieGenre = movieObject.getJSONArray("genres").getJSONObject(0).getString("name").toLowerCase();
             Movie movieObjectToAddToDB = new Movie(movieId, movieTitle, movieDescription, movieGenre, movieImageUrl);
             movies.save(movieObjectToAddToDB);
 

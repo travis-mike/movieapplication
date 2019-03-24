@@ -77,6 +77,13 @@ public class User {
         this.password = password;
     }
 
+    public User (Long id, String username, String email, String password) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+
     public Long getId() {
         return id;
     }
@@ -115,6 +122,10 @@ public class User {
 
     public void setUserMovieList(List<Movie> movieList) {
         this.userMovieList = movieList;
+    }
+
+    public void addToUserMovieList(Movie movie) {
+        userMovieList.add(movie);
     }
 
     public void setInitialGenrePoints (List <Movie> movieList) {

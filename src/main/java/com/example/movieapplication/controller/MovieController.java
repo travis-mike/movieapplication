@@ -1,6 +1,7 @@
 package com.example.movieapplication.controller;
 
 import com.example.movieapplication.model.Movie;
+import com.example.movieapplication.model.MovieScore;
 import com.example.movieapplication.repository.Movies;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -30,7 +31,6 @@ public class MovieController {
 
         String[] movieUrlStringArray = movie.split("-");
         Long movieUrlLongId = Long.parseLong(movieUrlStringArray[0]);
-        System.out.println(movieUrlLongId);
         Optional<Movie> foundOptionalMovie = movies.findById(movieUrlLongId);
 
         if (!foundOptionalMovie.isPresent()) {
@@ -49,7 +49,9 @@ public class MovieController {
             String movieTitle = movieObject.getString("title");
             String movieDescription = movieObject.getString("overview");
             String movieGenre = movieObject.getJSONArray("genres").getJSONObject(0).getString("name").toLowerCase();
-            Movie movieObjectToAddToDB = new Movie(movieId, movieTitle, movieDescription, movieGenre, movieImageUrl);
+            MovieScore movieScore = new MovieScore();
+            Movie movieObjectToAddToDB = new Movie(movieId, movieTitle, movieDescription, movieGenre, movieImageUrl, movieScore);
+
             movies.save(movieObjectToAddToDB);
 
             model.addAttribute("movie", movieObjectToAddToDB);
@@ -58,8 +60,10 @@ public class MovieController {
         } else {
 
             Movie foundMovie = foundOptionalMovie.get();
+            MovieScore movieScore = foundMovie.getMovieScore();
             System.out.println(foundMovie.getDescription());
             model.addAttribute("movie", foundMovie);
+            model.addAttribute("movieScore", movieScore);
             return "movie-page";
 
         }

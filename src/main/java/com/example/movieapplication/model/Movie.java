@@ -25,6 +25,7 @@ public class Movie {
     private String posterUrl;
 
     @Transient
+    @OneToOne
     private MovieScore movieScore;
 
     @ManyToMany(mappedBy = "userMovieList")
@@ -33,12 +34,13 @@ public class Movie {
     public Movie () {
     }
 
-    public Movie(Long id, String title, String description, String genre, String posterUrl) {
+    public Movie(Long id, String title, String description, String genre, String posterUrl, MovieScore movieScore) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.genre = genre;
         this.posterUrl = posterUrl;
+        this.movieScore = movieScore;
     }
 
     public String getPosterUrl() {

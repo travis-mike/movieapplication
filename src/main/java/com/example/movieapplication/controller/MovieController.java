@@ -34,6 +34,7 @@ public class MovieController {
         Optional<Movie> foundOptionalMovie = movies.findById(movieUrlLongId);
 
         if (!foundOptionalMovie.isPresent()) {
+
             try {
                 jsonNodeHttpResponse = Unirest.get(baseURL + "{movieId}" + apiKey)
                         .routeParam("movieId", movieUrlLongId.toString())
@@ -50,8 +51,9 @@ public class MovieController {
             String movieDescription = movieObject.getString("overview");
             String movieGenre = movieObject.getJSONArray("genres").getJSONObject(0).getString("name").toLowerCase();
             MovieScore movieScore = new MovieScore();
-            Movie movieObjectToAddToDB = new Movie(movieId, movieTitle, movieDescription, movieGenre, movieImageUrl, movieScore);
-
+            Movie movieObjectToAddToDB = new Movie(movieId, movieTitle, movieDescription, movieGenre, movieImageUrl);
+            movieObjectToAddToDB.setMovieScore(movieScore);
+            movieScore.setMovie(movieObjectToAddToDB);
             movies.save(movieObjectToAddToDB);
 
             model.addAttribute("movie", movieObjectToAddToDB);
@@ -60,10 +62,7 @@ public class MovieController {
         } else {
 
             Movie foundMovie = foundOptionalMovie.get();
-            MovieScore movieScore = foundMovie.getMovieScore();
-            System.out.println(foundMovie.getDescription());
             model.addAttribute("movie", foundMovie);
-            model.addAttribute("movieScore", movieScore);
             return "movie-page";
 
         }

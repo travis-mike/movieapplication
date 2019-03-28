@@ -24,23 +24,24 @@ public class Movie {
     @Column
     private String posterUrl;
 
-    @Transient
-    @OneToOne
-    private MovieScore movieScore;
-
     @ManyToMany(mappedBy = "userMovieList")
     private List<User> users = new ArrayList<>();
+
+    @OneToOne(fetch = FetchType.LAZY,
+            cascade =  CascadeType.ALL,
+            mappedBy = "movie")
+    private MovieScore movieScore;
 
     public Movie () {
     }
 
-    public Movie(Long id, String title, String description, String genre, String posterUrl, MovieScore movieScore) {
+    public Movie(Long id, String title, String description, String genre, String posterUrl) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.genre = genre;
         this.posterUrl = posterUrl;
-        this.movieScore = movieScore;
+
     }
 
     public String getPosterUrl() {
@@ -83,6 +84,7 @@ public class Movie {
         this.genre = genre;
     }
 
+
     public MovieScore getMovieScore() {
         return movieScore;
     }
@@ -90,4 +92,5 @@ public class Movie {
     public void setMovieScore(MovieScore movieScore) {
         this.movieScore = movieScore;
     }
+
 }

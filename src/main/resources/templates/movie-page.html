@@ -23,7 +23,8 @@
 </div>
 <h1 th:text="${movie.title}">movie title</h1>
 <h6 id = "movie-id" th:text="${movie.id}" hidden></h6>
-<h2 th:text="${movieScore.finalScore}">Movie Score</h2>
+<h2 th:text="${movie.movieScore.finalScore}">Movie Score</h2>
+<button id="one-star">1 star</button>
 <h2 th:text="${movie.genre}">movie genre</h2>
 <p th:text="${movie.description}"></p>
 <img th:src="@{'https://image.tmdb.org/t/p/w185' + ${movie.posterUrl}}">

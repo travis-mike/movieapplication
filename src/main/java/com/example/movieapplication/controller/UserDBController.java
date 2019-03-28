@@ -1,9 +1,11 @@
 package com.example.movieapplication.controller;
 
 import com.example.movieapplication.model.Movie;
+import com.example.movieapplication.model.MovieScore;
 import com.example.movieapplication.model.User;
 import com.example.movieapplication.service.MovieService;
 import com.example.movieapplication.service.UserDetailsLoader;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,6 +46,21 @@ public class UserDBController {
         Movie foundMovie = movieOptional.get();
         user.addToUserMovieList(foundMovie);
         return ResponseEntity.ok(userDetailsLoader.saveUser(user));
+    }
+
+    @PatchMapping("/{movieId}/rating")
+    public ResponseEntity<Movie> updateRating(@PathVariable Long movieId, @RequestBody MovieScore updatingScore) {
+        Optional<Movie>movieOptional = movieService.findById(movieId);
+        if (!movieOptional.isPresent()) {
+            ResponseEntity.badRequest().build();
+        }
+
+        Movie movie = movieOptional.get();
+        MovieScore movieScore = movie.getMovieScore();
+        if (updatingScore.getTotalPossiblePoints() != 0) movieScore.setTotalPossiblePoints(updatingScore.getTotalPossiblePoints());
+        if (updatingScore.getTotalActualPoints() != 0) movieScore.setTotalActualPoints(updatingScore.getTotalActualPoints());
+
+        return ResponseEntity.ok(movieService.save(movie));
     }
 
     @PatchMapping("/test/{movieId}")

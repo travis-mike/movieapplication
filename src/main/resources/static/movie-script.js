@@ -9,6 +9,7 @@
     console.log(movieId);
 
     document.querySelector("#add-to-favorites").addEventListener("click", updateMovieListWithPatchRequest);
+    // document.querySelector("#one-star").addEventListener("click", )
 
     function updateMovieListWithPatchRequest (event) {
         event.preventDefault();

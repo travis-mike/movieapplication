@@ -49,7 +49,7 @@ public class UserDBController {
     }
 
     @PatchMapping("/{movieId}/rating")
-    public ResponseEntity<Movie> updateRating(@PathVariable Long movieId, @RequestBody MovieScore updatingScore) {
+    public ResponseEntity<?> updateRating(@PathVariable Long movieId, @RequestBody MovieScore updatingScore) {
         Optional<Movie>movieOptional = movieService.findById(movieId);
         if (!movieOptional.isPresent()) {
             ResponseEntity.badRequest().build();
@@ -57,10 +57,12 @@ public class UserDBController {
 
         Movie movie = movieOptional.get();
         MovieScore movieScore = movie.getMovieScore();
-        if (updatingScore.getTotalPossiblePoints() != 0) movieScore.setTotalPossiblePoints(updatingScore.getTotalPossiblePoints());
-        if (updatingScore.getTotalActualPoints() != 0) movieScore.setTotalActualPoints(updatingScore.getTotalActualPoints());
-
-        return ResponseEntity.ok(movieService.save(movie));
+        if (updatingScore.getTotalPossiblePoints() != 0) movieScore.setTotalPossiblePoints(movieScore.getTotalPossiblePoints() + updatingScore.getTotalPossiblePoints());
+        if (updatingScore.getTotalActualPoints() != 0) movieScore.setTotalActualPoints(movieScore.getTotalActualPoints() + updatingScore.getTotalActualPoints());
+        movieScore.calculateFinalScore();
+        movie.setMovieScore(movieScore);
+        movieService.save(movie);
+        return ResponseEntity.ok("Rating saved.");
     }
 
     @PatchMapping("/test/{movieId}")

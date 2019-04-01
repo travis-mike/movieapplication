@@ -25,6 +25,10 @@
 <h6 id = "movie-id" th:text="${movie.id}" hidden></h6>
 <h2 th:text="${movie.movieScore.finalScore}">Movie Score</h2>
 <button id="one-star">1 star</button>
+<button id="two-star">2 star</button>
+<button id="three-star">3 star</button>
+<button id="four-star">4 star</button>
+<button id="five-star">5 star</button>
 <h2 th:text="${movie.genre}">movie genre</h2>
 <p th:text="${movie.description}"></p>
 <img th:src="@{'https://image.tmdb.org/t/p/w185' + ${movie.posterUrl}}">

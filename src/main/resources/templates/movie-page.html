@@ -3,7 +3,7 @@
       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8" />
-    <title>Sign up</title>
+    <title th:text="${movie.title}">movie title></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
     <link href="../static/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
@@ -24,15 +24,24 @@
     Username: <span id="username-field" th:text="${#authentication.principal.username}"/>
     <!--<span th:text="${user.email}"></span>-->
 </div>
-<img th:src="@{'https://image.tmdb.org/t/p/w342' + ${movie.posterUrl}}">
-<h1 th:text="${movie.title}">movie title</h1>
-<h6 id = "movie-id" th:text="${movie.id}" hidden></h6>
-<h2 th:text="${movie.movieScore.finalScore}">Movie Score</h2>
-<button id="one-star">1 star</button>
-<h2 th:text="${movie.genre}">movie genre</h2>
-<p th:text="${movie.description}"></p>
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <img th:src="@{'https://image.tmdb.org/t/p/w342' + ${movie.posterUrl}}">
+        </div>
+        <div class="col">
+        <h1 th:text="${movie.title}">movie title</h1>
+        <h6 id = "movie-id" th:text="${movie.id}" hidden></h6>
+        <h2 th:text="${movie.movieScore.finalScore}">Movie Score</h2>
+        <button id="one-star">1 star</button>
+        <h2 th:text="${movie.genre}">movie genre</h2>
+        <p th:text="${movie.description}"></p>
+        </div>
+    </div>
+
 
 <button id="add-to-favorites">Add to favorites list</button>
 <script type="text/javascript" th:src="@{/movie-script.js}"></script>
+</div>
 </body>
 </html>

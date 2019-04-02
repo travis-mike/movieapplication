@@ -28,6 +28,7 @@ public class ProfileController {
             UserDetailsLoader userDetailsLoader = new UserDetailsLoader(users);
             User movieUser = userDetailsLoader.loadUserWithMovieList(user.getUsername());
             model.addAttribute("movieList", movieUser.getUserMovieList());
+            model.addAttribute("user", movieUser);
                 return "profile";
         }
     }

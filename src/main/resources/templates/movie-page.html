@@ -6,7 +6,7 @@
     <title th:text="${movie.title}">movie title></title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
-    <link href="../static/styles.css" th:href="@{/css/styles.css}" rel="stylesheet" />
+    <link href="../static/css/styles.css" th:href="@{../static/css/styles.css}" rel="stylesheet">
 </head>
 <body>
 <div sec:authorize="isAuthenticated()">
@@ -24,23 +24,90 @@
     Username: <span id="username-field" th:text="${#authentication.principal.username}"/>
     <!--<span th:text="${user.email}"></span>-->
 </div>
-<div class="container">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">MovieApp</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="..">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Profile
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">Go to profile</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Logout</a>
+                </div>
+            </li>
+           <li>
+               <form class="form-inline my-2 my-lg-0">
+                   <input class="form-control mr-sm-2" type="search" placeholder="Search Movies" aria-label="Search">
+                   <button class="btn btn-outline-light my-2 my-sm-0" type="submit">Search</button>
+               </form>
+           </li>
+        </ul>
+
+    </div>
+</nav>
+<div class="container mt-3">
     <div class="row">
-        <div class="col">
+        <div class="col-4">
             <img th:src="@{'https://image.tmdb.org/t/p/w342' + ${movie.posterUrl}}">
         </div>
         <div class="col">
-        <h1 th:text="${movie.title}">movie title</h1>
-        <h6 id = "movie-id" th:text="${movie.id}" hidden></h6>
-        <h2 th:text="${movie.movieScore.finalScore}">Movie Score</h2>
-        <button id="one-star">1 star</button>
-        <h2 th:text="${movie.genre}">movie genre</h2>
+            <div class="row">
+                <div class="col">
+                    <h1 th:text="${movie.title}">movie title</h1>
+                    <h6 id = "movie-id" th:text="${movie.id}" hidden></h6>
+                </div>
+            </div>
+                <div class="row">
+                    <div class="col">
+                        <h2 th:text="${movie.movieScore.finalScore}"></h2>
+                    </div>
+                </div>
+<h4>My Rating:</h4>
+            <!--<button id="one-star" class="btn btn-outline-dark">-->
+                <!--<i class="fas fa-star"></i>-->
+            <!--</button>-->
+            <!--<button id="two-star" class="btn btn-outline-dark">-->
+                <!--<i class="fas fa-star"></i>-->
+                <!--<i class="fas fa-star"></i>-->
+            <!--</button>-->
+            <!--<button id="three-star" class="btn btn-outline-dark">-->
+                <!--<i class="fas fa-star"></i>-->
+                <!--<i class="fas fa-star"></i>-->
+                <!--<i class="fas fa-star"></i>-->
+            <!--</button>-->
+            <!--<button id="four-star" class="btn btn-outline-dark">-->
+                <!--<i class="fas fa-star"></i>-->
+                <!--<i class="fas fa-star"></i>-->
+                <!--<i class="fas fa-star"></i>-->
+                <!--<i class="fas fa-star"></i>-->
+            <!--</button>-->
+            <!--<button-->
+                <!--id="five-star" class="btn btn-outline-dark">-->
+                <!--<i class="fas fa-star"></i>-->
+                <!--<i class="fas fa-star"></i>-->
+                <!--<i class="fas fa-star"></i>-->
+                <!--<i class="fas fa-star"></i>-->
+                <!--<i class="fas fa-star"></i>-->
+            <!--</button>-->
+            <div class="rating">
+                <span>☆</span><span>☆</span><span>☆</span><span>☆</span><span>☆</span>
+            </div>
+
+            <h2 th:text="${movie.genre}">movie genre</h2>
         <p th:text="${movie.description}"></p>
+            <button id="add-to-favorites">Add to favorites list</button>
         </div>
     </div>
-
-
-<button id="add-to-favorites">Add to favorites list</button>
 <script type="text/javascript" th:src="@{/movie-script.js}"></script>
 </div>
 </body>

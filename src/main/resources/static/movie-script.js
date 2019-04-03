@@ -5,9 +5,6 @@
     let usernameId = document.querySelector("#username-field").innerHTML;
     let movieId = document.querySelector("#movie-id").innerHTML;
 
-    console.log(usernameId);
-    console.log(movieId);
-
     document.querySelector("#add-to-favorites").addEventListener("click", updateMovieListWithPatchRequest);
     document.querySelector("#one-star").addEventListener("click", updateOneStarMovieRatingWithPatchRequest);
     document.querySelector("#two-star").addEventListener("click", updateTwoStarMovieRatingWithPatchRequest);
@@ -17,17 +14,14 @@
 
     function updateMovieListWithPatchRequest(event) {
         event.preventDefault();
-        console.log(usernameId);
-        console.log(movieId);
         fetch("/api/v1/" + usernameId + "/add/" + movieId, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' }
-        });
+        })
     }
 
     function updateOneStarMovieRatingWithPatchRequest(event) {
         event.preventDefault();
-        console.log(movieId);
         fetch("/api/v1/" + movieId + "/rating", {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
@@ -40,7 +34,6 @@
 
     function updateTwoStarMovieRatingWithPatchRequest(event) {
         event.preventDefault();
-        console.log(movieId);
         fetch("/api/v1/" + movieId + "/rating", {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
@@ -53,7 +46,6 @@
 
     function updateThreeStarMovieRatingWithPatchRequest(event) {
         event.preventDefault();
-        console.log(movieId);
         fetch("/api/v1/" + movieId + "/rating", {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
@@ -66,7 +58,6 @@
 
     function updateFourStarMovieRatingWithPatchRequest(event) {
         event.preventDefault();
-        console.log(movieId);
         fetch("/api/v1/" + movieId + "/rating", {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
@@ -79,7 +70,6 @@
 
     function updateFiveStarMovieRatingWithPatchRequest(event) {
         event.preventDefault();
-        console.log(movieId);
         fetch("/api/v1/" + movieId + "/rating", {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },

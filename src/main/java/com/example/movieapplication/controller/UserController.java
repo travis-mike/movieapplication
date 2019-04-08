@@ -67,6 +67,7 @@ public class UserController {
         }
         user.setInitialGenrePoints(movieStarterList);
         user.setUserMovieList(movieStarterList);
+        user.setPreferredGenre();
         users.save(user);
         return "redirect:/login";
     }

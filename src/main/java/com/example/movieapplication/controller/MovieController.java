@@ -2,6 +2,7 @@ package com.example.movieapplication.controller;
 
 import com.example.movieapplication.model.Movie;
 import com.example.movieapplication.model.MovieScore;
+import com.example.movieapplication.model.User;
 import com.example.movieapplication.repository.Movies;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
@@ -9,6 +10,7 @@ import com.mashape.unirest.http.Unirest;
 import com.mashape.unirest.http.exceptions.UnirestException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -56,13 +58,18 @@ public class MovieController {
             movieScore.setMovie(movieObjectToAddToDB);
             movies.save(movieObjectToAddToDB);
 
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             model.addAttribute("movie", movieObjectToAddToDB);
+            model.addAttribute("user", user);
             return "movie-page";
 
         } else {
 
+            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Movie foundMovie = foundOptionalMovie.get();
             model.addAttribute("movie", foundMovie);
+            model.addAttribute("user", user);
+
             return "movie-page";
 
         }

@@ -29,6 +29,9 @@ public class User {
     private List<Movie> userMovieList;
 
     @Column
+    private String preferredGenre;
+
+    @Column
     private int horrorPoints;
 
     @Column
@@ -42,6 +45,9 @@ public class User {
 
     @Column
     private int sciFiPoints;
+
+    @Column
+    private int miscPoints;
 
     @Column
     private int bank;
@@ -58,17 +64,19 @@ public class User {
         comedyPoints = copy.comedyPoints;
         romancePoints = copy.romancePoints;
         sciFiPoints = copy.sciFiPoints;
+        miscPoints = copy.miscPoints;
+        preferredGenre = copy.preferredGenre;
         bank = copy.bank;
     }
 
     public User() {
-        this.horrorPoints = 0;
-        this.dramaPoints = 0;
-        this.comedyPoints = 0;
-        this.romancePoints = 0;
-        this.sciFiPoints = 0;
+        this.horrorPoints = 10;
+        this.dramaPoints = 10;
+        this.comedyPoints = 10;
+        this.romancePoints = 10;
+        this.sciFiPoints = 10;
+        this.miscPoints = 10;
         this.userMovieList = new ArrayList<>();
-        this.bank = 40;
     }
 
     public User(String username, String email, String password) {
@@ -128,6 +136,39 @@ public class User {
         userMovieList.add(movie);
     }
 
+    public void setPreferredGenre () {
+        int[] genrePointArrayMinusHorror = {dramaPoints, sciFiPoints, comedyPoints, romancePoints, miscPoints};
+        int[] genrePointsArrayMinusDrama = {horrorPoints, sciFiPoints, comedyPoints, romancePoints, miscPoints};
+        int[] genrePointsArrayMinusSciFi = {horrorPoints, dramaPoints, comedyPoints, romancePoints, miscPoints};
+        int[] genrePointsArrayMinusComedy = {horrorPoints, sciFiPoints, dramaPoints, romancePoints, miscPoints};
+        int[] genrePointsArrayMinusRomance = {horrorPoints, dramaPoints, sciFiPoints, comedyPoints, miscPoints};
+
+        if (checkHighestGenrePoints(horrorPoints, genrePointArrayMinusHorror)) {
+            preferredGenre = "horror";
+        } else if (checkHighestGenrePoints(dramaPoints, genrePointsArrayMinusDrama)) {
+            preferredGenre = "drama";
+        } else if (checkHighestGenrePoints(sciFiPoints, genrePointsArrayMinusSciFi)) {
+            preferredGenre = "sciFi";
+        } else if (checkHighestGenrePoints(comedyPoints, genrePointsArrayMinusComedy)) {
+            preferredGenre = "comedy";
+        } else if (checkHighestGenrePoints(romancePoints, genrePointsArrayMinusRomance)) {
+            preferredGenre = "romance";
+        } else preferredGenre = "miscellaneous";
+    }
+
+    public String getPreferredGenre() {
+        return preferredGenre;
+    }
+
+    private boolean checkHighestGenrePoints(int genrePoints, int[] genrePointArray) {
+        for (int i = 0; i < genrePointArray.length; i++) {
+            if (genrePointArray[i] >= genrePoints) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void setInitialGenrePoints (List <Movie> movieList) {
         for (Movie movie : movieList) {
             if (movie.getGenre().equals("horror")) {
@@ -140,7 +181,7 @@ public class User {
                 this.romancePoints++;
             } else if (movie.getGenre().equals("scifi")) {
                 this.sciFiPoints++;
-            }
+            } else this.miscPoints++;
         }
     }
 }

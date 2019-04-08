@@ -6,6 +6,7 @@
 </head>
 <body>
 <h1 th:text="${user.username}"></h1>
+<h2 th:text="${user.getPreferredGenre()}"></h2>
 <ul th:each="movie : *{movieList}">
     <img th:src="@{'https://image.tmdb.org/t/p/w185' + ${movie.posterUrl}}">
     <li th:text="*{movie.title}"></li>

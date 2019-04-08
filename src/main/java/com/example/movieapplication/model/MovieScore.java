@@ -20,16 +20,27 @@ public class MovieScore {
     @Column
     private double totalActualPoints;
 
+    @Column
+    private double finalGenreScore;
+
+    @Column
+    private double totalPossibleGenrePoints;
+
+    @Column
+    private double totalActualGenrePoints;
+
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "movie_score_join", nullable = false)
     private Movie movie;
 
     public MovieScore() {
-        this.finalScore = 0;
+        finalScore = 0;
+        finalGenreScore = 0;
     }
 
     public MovieScore(Movie movie){
-        this.finalScore = 0;
+        finalScore = 0;
+        finalGenreScore = 0;
         this.movie = movie;
     }
 
@@ -73,7 +84,33 @@ public class MovieScore {
         this.totalActualPoints = totalActualPoints;
     }
 
-    public void calculateFinalScore() {
-        this.finalScore = (totalActualPoints/totalPossiblePoints) * 100;
+    public double getFinalGenreScore() {
+        return finalGenreScore;
     }
+
+    public void setFinalGenreScore(double finalGenreScore) {
+        this.finalGenreScore = finalGenreScore;
+    }
+
+    public double getTotalPossibleGenrePoints() {
+        return totalPossibleGenrePoints;
+    }
+
+    public void setTotalPossibleGenrePoints(double totalPossibleGenrePoints) {
+        this.totalPossibleGenrePoints = totalPossibleGenrePoints;
+    }
+
+    public double getTotalActualGenrePoints() {
+        return totalActualGenrePoints;
+    }
+
+    public void setTotalActualGenrePoints(double totalActualGenrePoints) {
+        this.totalActualGenrePoints = totalActualGenrePoints;
+    }
+
+    public void calculateFinalScore() {
+        finalScore = (totalActualPoints/totalPossiblePoints) * 100;
+    }
+
+    public void calculateFinalGenreScore() { finalGenreScore = (totalActualGenrePoints/totalPossibleGenrePoints) * 100; }
 }

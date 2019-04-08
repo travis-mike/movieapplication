@@ -13,6 +13,7 @@ import java.util.Optional;
 
 //RESTFUL API
 
+@SuppressWarnings("Duplicates")
 @RestController
 @RequestMapping("/api/v1")
 public class UserDBController {
@@ -36,7 +37,7 @@ public class UserDBController {
     }
 
     @PatchMapping("/{username}/add/{movieId}")
-    public ResponseEntity<User> addMovieToUserFavorites(@PathVariable String username, @PathVariable Long movieId) {
+    public ResponseEntity<?> addMovieToUserFavorites(@PathVariable String username, @PathVariable Long movieId) {
         User user = userDetailsLoader.loadUserWithMovieList(username);
         if (user == null) {
             ResponseEntity.badRequest().build();
@@ -44,11 +45,12 @@ public class UserDBController {
         Optional<Movie> movieOptional = movieService.findById(movieId);
         Movie foundMovie = movieOptional.get();
         user.addToUserMovieList(foundMovie);
-        return ResponseEntity.ok(userDetailsLoader.saveUser(user));
+        userDetailsLoader.saveUser(user);
+        return ResponseEntity.ok("Movie saved to user list.");
     }
 
-    @PatchMapping("/{movieId}/rating")
-    public ResponseEntity<?> updateRating(@PathVariable Long movieId, @RequestBody MovieScore updatingScore) {
+    @PatchMapping("/{movieId}/rating/{movieGenreMatch}")
+    public ResponseEntity<?> updateRating(@PathVariable Long movieId, @PathVariable boolean movieGenreMatch, @RequestBody MovieScore updatingScore) {
         Optional<Movie>movieOptional = movieService.findById(movieId);
         if (!movieOptional.isPresent()) {
             ResponseEntity.badRequest().build();
@@ -58,11 +60,35 @@ public class UserDBController {
         MovieScore movieScore = movie.getMovieScore();
         if (updatingScore.getTotalPossiblePoints() != 0) movieScore.setTotalPossiblePoints(movieScore.getTotalPossiblePoints() + updatingScore.getTotalPossiblePoints());
         if (updatingScore.getTotalActualPoints() != 0) movieScore.setTotalActualPoints(movieScore.getTotalActualPoints() + updatingScore.getTotalActualPoints());
+        if (movieGenreMatch) {
+            if (updatingScore.getTotalPossibleGenrePoints() != 0) movieScore.setTotalPossibleGenrePoints(movieScore.getTotalPossibleGenrePoints() + updatingScore.getTotalPossibleGenrePoints());
+            if (updatingScore.getTotalActualGenrePoints() != 0) movieScore.setTotalActualGenrePoints(movieScore.getTotalActualGenrePoints() + updatingScore.getTotalActualGenrePoints());
+        }
         movieScore.calculateFinalScore();
+        if (movieGenreMatch) {
+            movieScore.calculateFinalGenreScore();
+        }
         movie.setMovieScore(movieScore);
         movieService.save(movie);
         return ResponseEntity.ok("Rating saved.");
     }
+
+//    @PatchMapping("/{movieId}/rating/")
+//    public ResponseEntity<?> updateGenreRating(@PathVariable Long movieId, @PathVariable boolean movieGenreMatch, @RequestBody MovieScore updatingGenreScore) {
+//        Optional<Movie>movieOptional = movieService.findById(movieId);
+//        if (!movieOptional.isPresent()) {
+//            ResponseEntity.badRequest().build();
+//        }
+//
+//        Movie movie = movieOptional.get();
+//        MovieScore movieScore = movie.getMovieScore();
+//        if (updatingGenreScore.getTotalPossibleGenrePoints() != 0) movieScore.setTotalPossibleGenrePoints(movieScore.getTotalPossibleGenrePoints() + updatingGenreScore.getTotalPossibleGenrePoints());
+//        if (updatingGenreScore.getTotalActualGenrePoints() != 0) movieScore.setTotalActualGenrePoints(movieScore.getTotalActualGenrePoints() + updatingGenreScore.getTotalActualGenrePoints());
+//        movieScore.calculateFinalGenreScore();
+//        movie.setMovieScore(movieScore);
+//        movieService.save(movie);
+//        return ResponseEntity.ok("Genre rating saved.");
+//    }
 
     @PatchMapping("/test/{movieId}")
     public ResponseEntity<Movie> update(@PathVariable Long movieId, @RequestBody Movie updatingMovie) {

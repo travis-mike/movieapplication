@@ -49,10 +49,6 @@ public class User {
     @Column
     private int miscPoints;
 
-    @Column
-    private int bank;
-
-
     public User(User copy) {
         id = copy.id; // This line is SUPER important! Many things won't work if it's absent
         email = copy.email;
@@ -66,7 +62,6 @@ public class User {
         sciFiPoints = copy.sciFiPoints;
         miscPoints = copy.miscPoints;
         preferredGenre = copy.preferredGenre;
-        bank = copy.bank;
     }
 
     public User() {
@@ -134,6 +129,30 @@ public class User {
 
     public void addToUserMovieList(Movie movie) {
         userMovieList.add(movie);
+    }
+
+    public int getHorrorPoints() {
+        return horrorPoints;
+    }
+
+    public int getDramaPoints() {
+        return dramaPoints;
+    }
+
+    public int getComedyPoints() {
+        return comedyPoints;
+    }
+
+    public int getRomancePoints() {
+        return romancePoints;
+    }
+
+    public int getSciFiPoints() {
+        return sciFiPoints;
+    }
+
+    public int getMiscPoints() {
+        return miscPoints;
     }
 
     public void setPreferredGenre () {

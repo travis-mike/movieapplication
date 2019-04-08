@@ -70,7 +70,7 @@ public class UserDBController {
         }
         movie.setMovieScore(movieScore);
         movieService.save(movie);
-        return ResponseEntity.ok("Rating saved.");
+        return ResponseEntity.ok("Movie rating saved.");
     }
 
 //    @PatchMapping("/{movieId}/rating/")

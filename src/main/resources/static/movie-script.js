@@ -8,6 +8,7 @@
     let movieGenre = document.querySelector("#movie-genre").innerHTML;
     let movieGenreMatch = false;
 
+
     console.log(userPreferredGenre);
     console.log(movieGenre);
 
@@ -99,5 +100,7 @@
             })
         })
     }
+
+
 
 })();

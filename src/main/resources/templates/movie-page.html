@@ -18,22 +18,22 @@
         </ul>
     </nav>
     <!--Logged user: <span sec:authentication="name">test</span>-->
-    Username: <span id="username-field" th:text="${#authentication.principal.username}"/>
-    User genre: <span id="preferred-genre" th:text="${user.getPreferredGenre()}"></span>
+    Username: <span id="username-field" th:text="${#authentication.principal.username}"></span>
+    User Preferred Genre: <span id="preferred-genre" th:text="${user.getPreferredGenre()}"></span>
     Horror points: <span id="horror-points" th:text="${user.getHorrorPoints()}"></span>
     Drama points: <span id="drama-points" th:text="${user.getDramaPoints()}"></span>
     Comedy points: <span id="comedy-points" th:text="${user.getComedyPoints()}"></span>
-    SciFi points: <span id="scifi-points" th:text="${user.getSciFiPoints()}">
+    SciFi points: <span id="scifi-points" th:text="${user.getSciFiPoints()}"></span>
     Romance points: <span id="romance-points" th:text="${user.getRomancePoints()}"></span>
     Misc points: <span id="misc-points" th:text="${user.getMiscPoints()}"></span>
-</span>
 </tr>
     <!--<span th:text="${user.email}"></span>-->
 </div>
 <h1 th:text="${movie.title}">movie title</h1>
 <h6 id = "movie-id" th:text="${movie.id}" hidden></h6>
-<h2 th:text="${movie.movieScore.finalScore}">Movie Score</h2>
-<h2 th:text="${movie.movieScore.finalGenreScore}">Movie Score</h2>
+Overall Score: <h2 th:text="${movie.movieScore.finalScore}">Movie Score</h2>
+Genre Score: <h2 th:text="${movie.movieScore.finalGenreScore}">Movie Score</h2>
+Weighted Score: <h2 th:text="${movie.movieScore.finalWeightedScore}">Movie Score</h2>
 <button id="one-star">1 star</button>
 <button id="two-star">2 star</button>
 <button id="three-star">3 star</button>

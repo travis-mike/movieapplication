@@ -60,14 +60,18 @@ public class UserDBController {
         MovieScore movieScore = movie.getMovieScore();
         if (updatingScore.getTotalPossiblePoints() != 0) movieScore.setTotalPossiblePoints(movieScore.getTotalPossiblePoints() + updatingScore.getTotalPossiblePoints());
         if (updatingScore.getTotalActualPoints() != 0) movieScore.setTotalActualPoints(movieScore.getTotalActualPoints() + updatingScore.getTotalActualPoints());
+        if (updatingScore.getTotalPossibleWeightedPoints() != 0) movieScore.setTotalPossibleWeightedPoints(movieScore.getTotalPossibleWeightedPoints() + updatingScore.getTotalPossibleWeightedPoints());
+        if (updatingScore.getTotalActualWeightedPoints() != 0) movieScore.setTotalActualWeightedPoints(movieScore.getTotalActualWeightedPoints() + updatingScore.getTotalActualWeightedPoints());
         if (movieGenreMatch) {
             if (updatingScore.getTotalPossibleGenrePoints() != 0) movieScore.setTotalPossibleGenrePoints(movieScore.getTotalPossibleGenrePoints() + updatingScore.getTotalPossibleGenrePoints());
             if (updatingScore.getTotalActualGenrePoints() != 0) movieScore.setTotalActualGenrePoints(movieScore.getTotalActualGenrePoints() + updatingScore.getTotalActualGenrePoints());
         }
+
         movieScore.calculateFinalScore();
         if (movieGenreMatch) {
             movieScore.calculateFinalGenreScore();
         }
+        movieScore.calculateFinalWeightedScore();
         movie.setMovieScore(movieScore);
         movieService.save(movie);
         return ResponseEntity.ok("Movie rating saved.");

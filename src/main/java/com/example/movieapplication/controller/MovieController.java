@@ -3,7 +3,9 @@ package com.example.movieapplication.controller;
 import com.example.movieapplication.model.Movie;
 import com.example.movieapplication.model.MovieScore;
 import com.example.movieapplication.model.User;
+import com.example.movieapplication.model.UserWithRoles;
 import com.example.movieapplication.repository.Movies;
+import com.example.movieapplication.service.UserDetailsLoader;
 import com.mashape.unirest.http.HttpResponse;
 import com.mashape.unirest.http.JsonNode;
 import com.mashape.unirest.http.Unirest;
@@ -27,6 +29,11 @@ public class MovieController {
     private HttpResponse<JsonNode> jsonNodeHttpResponse;
     private static final String baseURL = "https://api.themoviedb.org/3/movie/";
     private static final String apiKey = "?api_key=49990b53c193c05b1ce005f26fbf50c1&language=en-US";
+    private UserDetailsLoader userDetailsLoader;
+
+    public MovieController (UserDetailsLoader userDetailsLoader) {
+        this.userDetailsLoader = userDetailsLoader;
+    }
 
     @RequestMapping("movies/{movie}")
     public String getMoviePage(Model model, @PathVariable("movie") String movie) {
@@ -34,6 +41,12 @@ public class MovieController {
         String[] movieUrlStringArray = movie.split("-");
         Long movieUrlLongId = Long.parseLong(movieUrlStringArray[0]);
         Optional<Movie> foundOptionalMovie = movies.findById(movieUrlLongId);
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        System.out.println(principal.getClass());
+        if (principal instanceof UserWithRoles) {
+            User user = userDetailsLoader.loadUserThroughObject(principal);
+            model.addAttribute("user", user);
+        }
 
         if (!foundOptionalMovie.isPresent()) {
 
@@ -58,17 +71,13 @@ public class MovieController {
             movieScore.setMovie(movieObjectToAddToDB);
             movies.save(movieObjectToAddToDB);
 
-            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             model.addAttribute("movie", movieObjectToAddToDB);
-            model.addAttribute("user", user);
             return "movie-page";
 
         } else {
 
-            User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             Movie foundMovie = foundOptionalMovie.get();
             model.addAttribute("movie", foundMovie);
-            model.addAttribute("user", user);
 
             return "movie-page";
 

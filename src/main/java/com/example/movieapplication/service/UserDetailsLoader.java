@@ -36,6 +36,12 @@ public class UserDetailsLoader implements UserDetailsService {
         return user;
     }
 
+    public User loadUserThroughObject(Object obj) {
+        UserWithRoles userWithRoles = (UserWithRoles)obj;
+        User user = users.findByUsername(userWithRoles.getUsername());
+        return user;
+        }
+
     public User saveUser(User user) {
         return users.save(user);
     }

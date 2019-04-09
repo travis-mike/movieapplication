@@ -84,7 +84,6 @@ public class Movie {
         this.genre = genre;
     }
 
-
     public MovieScore getMovieScore() {
         return movieScore;
     }

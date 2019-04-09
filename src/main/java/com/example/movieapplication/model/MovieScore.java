@@ -29,6 +29,15 @@ public class MovieScore {
     @Column
     private double totalActualGenrePoints;
 
+    @Column
+    private double finalWeightedScore;
+
+    @Column
+    private double totalPossibleWeightedPoints;
+
+    @Column
+    private double totalActualWeightedPoints;
+
     @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "movie_score_join", nullable = false)
     private Movie movie;
@@ -113,4 +122,32 @@ public class MovieScore {
     }
 
     public void calculateFinalGenreScore() { finalGenreScore = (totalActualGenrePoints/totalPossibleGenrePoints) * 100; }
+
+    public double getFinalWeightedScore() {
+        return finalWeightedScore;
+    }
+
+    public void setFinalWeightedScore(double finalWeightedScore) {
+        this.finalWeightedScore = finalWeightedScore;
+    }
+
+    public double getTotalPossibleWeightedPoints() {
+        return totalPossibleWeightedPoints;
+    }
+
+    public void setTotalPossibleWeightedPoints(double totalPossibleWeightedPoints) {
+        this.totalPossibleWeightedPoints = totalPossibleWeightedPoints;
+    }
+
+    public double getTotalActualWeightedPoints() {
+        return totalActualWeightedPoints;
+    }
+
+    public void setTotalActualWeightedPoints(double totalActualWeightedPoints) {
+        this.totalActualWeightedPoints = totalActualWeightedPoints;
+    }
+
+    public void calculateFinalWeightedScore() {
+        finalWeightedScore = (totalActualWeightedPoints / totalPossibleWeightedPoints) * 100;
+    }
 }

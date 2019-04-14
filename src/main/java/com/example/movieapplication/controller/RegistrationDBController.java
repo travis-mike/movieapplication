@@ -32,4 +32,16 @@ public class RegistrationDBController {
         }
         return ResponseEntity.ok(userExistsInDataBase);
     }
+
+    @GetMapping("email/{email}")
+    public ResponseEntity<Boolean> checkIfEmailIsPresentInDatabase(@PathVariable String email) {
+        Boolean emailExistsInDataBase = false;
+        Iterator<User> allUsers = userDetailsLoader.allUsers().iterator();
+        while(allUsers.hasNext()) {
+            if (allUsers.next().getEmail().equals(email)) {
+                emailExistsInDataBase = true;
+            }
+        }
+        return ResponseEntity.ok(emailExistsInDataBase);
+    }
 }

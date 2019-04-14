@@ -53,6 +53,10 @@ public class UserDetailsLoader implements UserDetailsService {
         return users.save(user);
     }
 
+    public Iterable<User> allUsers () {
+        return users.findAll();
+    }
+
 }
 
 

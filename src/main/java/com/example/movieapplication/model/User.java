@@ -49,7 +49,9 @@ public class User {
     @Column
     private int sciFiPoints;
 
+    //Get rid of this transient annotation after you get registration restcontroller working
     @Column
+    @Transient
     private int miscPoints;
 
     public User(User copy) {

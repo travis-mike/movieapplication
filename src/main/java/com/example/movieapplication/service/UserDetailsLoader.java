@@ -36,6 +36,13 @@ public class UserDetailsLoader implements UserDetailsService {
         return user;
     }
 
+    @Transactional
+    public User loadUserWithRatingList(String username) {
+        User user = users.findByUsername(username);
+        Hibernate.initialize(user.getMovieRatings());
+        return user;
+    }
+
     public User loadUserThroughObject(Object obj) {
         UserWithRoles userWithRoles = (UserWithRoles)obj;
         User user = users.findByUsername(userWithRoles.getUsername());

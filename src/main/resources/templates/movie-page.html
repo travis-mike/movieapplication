@@ -34,15 +34,21 @@
 Overall Score: <h2 th:text="${movie.movieScore.finalScore}">Movie Score</h2>
 Genre Score: <h2 th:text="${movie.movieScore.finalGenreScore}">Movie Score</h2>
 Weighted Score: <h2 th:text="${movie.movieScore.finalWeightedScore}">Movie Score</h2>
+<div id="review-warning"></div>
+<div id="review-panel">
 <button id="one-star">1 star</button>
 <button id="two-star">2 star</button>
 <button id="three-star">3 star</button>
 <button id="four-star">4 star</button>
 <button id="five-star">5 star</button>
+</div>
 <h2 id = "movie-genre" th:text="${movie.genre}">movie genre</h2>
 <p th:text="${movie.description}"></p>
 <img th:src="@{'https://image.tmdb.org/t/p/w185' + ${movie.posterUrl}}">
+<div id="favorites-warning"></div>
+<div id="favorites-panel">
 <button id="add-to-favorites">Add to favorites list</button>
+</div>
 <script type="text/javascript" th:src="@{/movie-script.js}"></script>
 </body>
 </html>

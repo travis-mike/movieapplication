@@ -42,7 +42,6 @@ public class MovieController {
         Long movieUrlLongId = Long.parseLong(movieUrlStringArray[0]);
         Optional<Movie> foundOptionalMovie = movies.findById(movieUrlLongId);
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        System.out.println(principal.getClass());
         if (principal instanceof UserWithRoles) {
             User user = userDetailsLoader.loadUserThroughObject(principal);
             model.addAttribute("user", user);

@@ -1,6 +1,7 @@
 package com.example.movieapplication.controller;
 
 import com.example.movieapplication.model.Movie;
+import com.example.movieapplication.model.MovieRating;
 import com.example.movieapplication.model.MovieScore;
 import com.example.movieapplication.model.User;
 import com.example.movieapplication.service.MovieService;
@@ -49,50 +50,53 @@ public class UserDBController {
         return ResponseEntity.ok("Movie saved to user list.");
     }
 
-    @PatchMapping("/{movieId}/rating/{movieGenreMatch}")
-    public ResponseEntity<?> updateRating(@PathVariable Long movieId, @PathVariable boolean movieGenreMatch, @RequestBody MovieScore updatingScore) {
+    @PatchMapping("/{username}/{movieId}/rating/{movieGenreMatch}")
+    public ResponseEntity<?> updateRating(@PathVariable Long movieId, @PathVariable boolean movieGenreMatch, @RequestBody MovieScore updatingScore, @PathVariable String username) {
+        User user = userDetailsLoader.loadUserWithRatingList(username);
+        if (user == null) {
+            ResponseEntity.badRequest().build();
+        }
+
         Optional<Movie>movieOptional = movieService.findById(movieId);
         if (!movieOptional.isPresent()) {
             ResponseEntity.badRequest().build();
         }
 
+        MovieRating movieRating = new MovieRating();
+
         Movie movie = movieOptional.get();
+        movieRating.setMovieId(movie.getId());
+
         MovieScore movieScore = movie.getMovieScore();
         if (updatingScore.getTotalPossiblePoints() != 0) movieScore.setTotalPossiblePoints(movieScore.getTotalPossiblePoints() + updatingScore.getTotalPossiblePoints());
+        if (updatingScore.getTotalPossiblePoints() != 0) movieRating.setTotalPossiblePoints(updatingScore.getTotalPossiblePoints());
         if (updatingScore.getTotalActualPoints() != 0) movieScore.setTotalActualPoints(movieScore.getTotalActualPoints() + updatingScore.getTotalActualPoints());
+        if (updatingScore.getTotalActualPoints() != 0) movieRating.setTotalActualPoints(updatingScore.getTotalActualPoints());
         if (updatingScore.getTotalPossibleWeightedPoints() != 0) movieScore.setTotalPossibleWeightedPoints(movieScore.getTotalPossibleWeightedPoints() + updatingScore.getTotalPossibleWeightedPoints());
+        if (updatingScore.getTotalPossibleWeightedPoints() !=0) movieRating.setTotalPossibleWeightedPoints(updatingScore.getTotalPossibleWeightedPoints());
         if (updatingScore.getTotalActualWeightedPoints() != 0) movieScore.setTotalActualWeightedPoints(movieScore.getTotalActualWeightedPoints() + updatingScore.getTotalActualWeightedPoints());
+        if (updatingScore.getTotalActualWeightedPoints() != 0) movieRating.setTotalActualWeightedPoints(updatingScore.getTotalPossibleWeightedPoints());
+
         if (movieGenreMatch) {
             if (updatingScore.getTotalPossibleGenrePoints() != 0) movieScore.setTotalPossibleGenrePoints(movieScore.getTotalPossibleGenrePoints() + updatingScore.getTotalPossibleGenrePoints());
+            if (updatingScore.getTotalPossibleGenrePoints() != 0) movieRating.setTotalPossibleGenrePoints(updatingScore.getTotalPossibleGenrePoints());
             if (updatingScore.getTotalActualGenrePoints() != 0) movieScore.setTotalActualGenrePoints(movieScore.getTotalActualGenrePoints() + updatingScore.getTotalActualGenrePoints());
-        }
-
-        movieScore.calculateFinalScore();
-        if (movieGenreMatch) {
+            if (updatingScore.getTotalActualGenrePoints() != 0) movieRating.setTotalActualGenrePoints(updatingScore.getTotalActualGenrePoints());
             movieScore.calculateFinalGenreScore();
         }
+
+        user.addToRatingsList(movieRating);
+        movieRating.setUser(user);
+
+        movieScore.calculateFinalScore();
         movieScore.calculateFinalWeightedScore();
         movie.setMovieScore(movieScore);
+
+        userDetailsLoader.saveUser(user);
         movieService.save(movie);
         return ResponseEntity.ok("Movie rating saved.");
     }
 
-//    @PatchMapping("/{movieId}/rating/")
-//    public ResponseEntity<?> updateGenreRating(@PathVariable Long movieId, @PathVariable boolean movieGenreMatch, @RequestBody MovieScore updatingGenreScore) {
-//        Optional<Movie>movieOptional = movieService.findById(movieId);
-//        if (!movieOptional.isPresent()) {
-//            ResponseEntity.badRequest().build();
-//        }
-//
-//        Movie movie = movieOptional.get();
-//        MovieScore movieScore = movie.getMovieScore();
-//        if (updatingGenreScore.getTotalPossibleGenrePoints() != 0) movieScore.setTotalPossibleGenrePoints(movieScore.getTotalPossibleGenrePoints() + updatingGenreScore.getTotalPossibleGenrePoints());
-//        if (updatingGenreScore.getTotalActualGenrePoints() != 0) movieScore.setTotalActualGenrePoints(movieScore.getTotalActualGenrePoints() + updatingGenreScore.getTotalActualGenrePoints());
-//        movieScore.calculateFinalGenreScore();
-//        movie.setMovieScore(movieScore);
-//        movieService.save(movie);
-//        return ResponseEntity.ok("Genre rating saved.");
-//    }
 
     @PatchMapping("/test/{movieId}")
     public ResponseEntity<Movie> update(@PathVariable Long movieId, @RequestBody Movie updatingMovie) {

@@ -46,7 +46,7 @@ public class UserController {
 
     @GetMapping("register/movies")
     public String userSelectsFilms(Model model) {
-        List<Long> movieLongList = new ArrayList<Long>(Arrays.asList(1L, 2L));
+        List<Long> movieLongList = new ArrayList<Long>(Arrays.asList(289L, 595L));
         Iterable<Movie> movieStarters = movies.findAllById(movieLongList);
         model.addAttribute("movieSignUpList", movieStarters);
         return "register-movies";
@@ -67,7 +67,7 @@ public class UserController {
         }
         user.setInitialGenrePoints(movieStarterList);
         user.setUserMovieList(movieStarterList);
-        user.setPreferredGenre();
+        user.setPreferredGenreThroughArrayList();
         users.save(user);
         return "redirect:/login";
     }

@@ -14,13 +14,31 @@
     let userMiscPointValue = document.querySelector("#misc-points").innerHTML;
     let actualUserPointValue = 0;
     let movieGenreMatch = false;
+    let movieExistsInUserFavorites = false;
+    let movieExistsInUserRatings = false;
 
     retrievePointValueOffUserObject(movieGenre);
-    console.log(actualUserPointValue);
 
     if (userPreferredGenre === movieGenre) {
         movieGenreMatch = true;
     }
+
+    checkIfMovieExistsInUserFavorites();
+    checkIfMovieExistsInUserRatings();
+
+    //need to refactor the below functions to construct the rating and favorite buttons after the timeout concludes
+
+    setTimeout(function() {
+        if (movieExistsInUserFavorites) {
+            removeFavoritesButtonFromPage();
+        }
+    }, 250);
+
+    setTimeout(function() {
+        if (movieExistsInUserRatings) {
+            removeRatingElementsFromPage();
+        }
+    }, 250);
 
     document.querySelector("#add-to-favorites").addEventListener("click", updateMovieListWithPatchRequest);
     document.querySelector("#one-star").addEventListener("click", updateOneStarMovieRatingWithPatchRequest);
@@ -50,14 +68,13 @@
         fetch("/api/v1/" + usernameId + "/add/" + movieId, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' }
-        });
+        }).then(removeFavoritesButtonFromPage)
+            .catch(alertUserOfFailedFavoritesFetch);
     }
 
     function updateOneStarMovieRatingWithPatchRequest(event) {
         event.preventDefault();
-        console.log(actualUserPointValue);
-        console.log(actualUserPointValue * 0.2);
-        fetch("/api/v1/" + movieId + "/rating/" + movieGenreMatch, {
+        fetch("/api/v1/" + usernameId + "/" + movieId + "/rating/" + movieGenreMatch, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -68,12 +85,14 @@
                 "totalPossibleWeightedPoints": actualUserPointValue,
                 "totalActualWeightedPoints": actualUserPointValue * 0.2
             })
-        });
+        }).then(removeRatingElementsFromPage)
+            .catch(alertUserOfFailedRatingFetch);
+
     }
 
     function updateTwoStarMovieRatingWithPatchRequest(event) {
         event.preventDefault();
-        fetch("/api/v1/" + movieId + "/rating/" + movieGenreMatch, {
+        fetch("/api/v1/" + usernameId + "/" + movieId + "/rating/" + movieGenreMatch, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -84,12 +103,13 @@
                 "totalPossibleWeightedPoints": actualUserPointValue,
                 "totalActualWeightedPoints": actualUserPointValue * 0.4
             })
-        })
+        }).then(removeRatingElementsFromPage)
+            .catch(alertUserOfFailedRatingFetch);
     }
 
     function updateThreeStarMovieRatingWithPatchRequest(event) {
         event.preventDefault();
-        fetch("/api/v1/" + movieId + "/rating/" + movieGenreMatch, {
+        fetch("/api/v1/" + usernameId + "/" + movieId + "/rating/" + movieGenreMatch, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -100,12 +120,13 @@
                 "totalPossibleWeightedPoints": actualUserPointValue,
                 "totalActualWeightedPoints": actualUserPointValue * 0.6
             })
-        })
+        }).then(removeRatingElementsFromPage)
+            .catch(alertUserOfFailedRatingFetch);
     }
 
     function updateFourStarMovieRatingWithPatchRequest(event) {
         event.preventDefault();
-        fetch("/api/v1/" + movieId + "/rating", {
+        fetch("/api/v1/" + usernameId + "/" + movieId + "/rating/" + movieGenreMatch, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -116,12 +137,13 @@
                 "totalPossibleWeightedPoints": actualUserPointValue,
                 "totalActualWeightedPoints": actualUserPointValue * 0.8
             })
-        })
+        }).then(removeRatingElementsFromPage)
+            .catch(alertUserOfFailedRatingFetch);
     }
 
     function updateFiveStarMovieRatingWithPatchRequest(event) {
         event.preventDefault();
-        fetch("/api/v1/" + movieId + "/rating", {
+        fetch("/api/v1/" + usernameId + "/" + movieId + "/rating/" + movieGenreMatch, {
             method: 'PATCH',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -132,9 +154,41 @@
                 "totalPossibleWeightedPoints": actualUserPointValue,
                 "totalActualWeightedPoints": actualUserPointValue
             })
+        }).then(removeRatingElementsFromPage)
+            .catch(alertUserOfFailedRatingFetch);
+    }
+
+    function checkIfMovieExistsInUserFavorites() {
+        fetch(usernameId + "/get/" + movieId).then((response) => {
+            response.json().then(data  => {
+                movieExistsInUserFavorites = data;
+            })
         })
     }
 
+    function checkIfMovieExistsInUserRatings() {
+        fetch(usernameId + "/get/" + movieId + "/rating").then(response => {
+            response.json().then(data => {
+                movieExistsInUserRatings = data;
+            })
+        })
+    }
+
+    function removeRatingElementsFromPage() {
+        document.querySelector("#review-panel").innerHTML = "<p>Rating recorded.</p>";
+    }
+
+    function alertUserOfFailedRatingFetch() {
+        document.querySelector("#review-warning").innerHTML = "<p>Rating failed. Try again.</p>"
+    }
+
+    function removeFavoritesButtonFromPage() {
+        document.querySelector("#favorites-panel").innerHTML = "<p>Movie added to favorites list.</p>"
+    }
+
+    function alertUserOfFailedFavoritesFetch() {
+        document.querySelector("#favorites-warning").innerHTML = "<p>Movie failed to add. Try again</p>"
+    }
 
 
 })();

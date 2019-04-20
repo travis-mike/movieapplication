@@ -17,8 +17,13 @@
 
     <label for="password">Password</label>
     <input id="password" type="password" th:field="*{password}" />
+    <div id="password-warning"></div>
 
-    <input id="submit" value="Sign me up!" type="submit" />
+    <label for="password-checker">Re-enter your password</label>
+    <input id="password-checker" type="password">
+    <div id="password-checker-warning"></div>
+
+    <input id="submit" value="Sign me up!" type="submit" disabled="disabled" />
 </form>
 <script type="text/javascript" th:src="@{/registration-script.js}"></script>
 </body>

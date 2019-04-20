@@ -65,7 +65,9 @@ public class UserDBController {
         MovieRating movieRating = new MovieRating();
 
         Movie movie = movieOptional.get();
-        movieRating.setMovieId(movie.getId());
+
+        System.out.println(movieId);
+        movieRating.setMovieId(movieId);
 
         MovieScore movieScore = movie.getMovieScore();
         if (updatingScore.getTotalPossiblePoints() != 0) movieScore.setTotalPossiblePoints(movieScore.getTotalPossiblePoints() + updatingScore.getTotalPossiblePoints());
@@ -84,6 +86,7 @@ public class UserDBController {
             if (updatingScore.getTotalActualGenrePoints() != 0) movieRating.setTotalActualGenrePoints(updatingScore.getTotalActualGenrePoints());
             movieScore.calculateFinalGenreScore();
         }
+
 
         user.addToRatingsList(movieRating);
         movieRating.setUser(user);

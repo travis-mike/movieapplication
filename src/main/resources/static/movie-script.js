@@ -14,8 +14,9 @@
     let userMiscPointValue = document.querySelector("#misc-points").innerHTML;
     let actualUserPointValue = 0;
     let movieGenreMatch = false;
-    let movieExistsInUserFavorites = false;
-    let movieExistsInUserRatings = false;
+    // let movieExistsInUserFavorites = false;
+    // let movieExistsInUserRatings = false;
+
 
     retrievePointValueOffUserObject(movieGenre);
 
@@ -23,29 +24,43 @@
         movieGenreMatch = true;
     }
 
-    checkIfMovieExistsInUserFavorites();
-    checkIfMovieExistsInUserRatings();
+
+    // checkIfMovieExistsInUserFavorites();
+    // checkIfMovieExistsInUserRatings();
 
     //need to refactor the below functions to construct the rating and favorite buttons after the timeout concludes
 
-    setTimeout(function() {
-        if (movieExistsInUserFavorites) {
-            removeFavoritesButtonFromPage();
-        }
-    }, 250);
+    // setTimeout(function() {
+    //     if (movieExistsInUserFavorites) {
+    //         removeFavoritesButtonFromPage();
+    //     }
+    // }, 250);
 
-    setTimeout(function() {
-        if (movieExistsInUserRatings) {
-            removeRatingElementsFromPage();
-        }
-    }, 250);
+    // setTimeout(function() {
+    //     if (movieExistsInUserRatings) {
+    //         removeRatingElementsFromPage();
+    //     }
+    // }, 250);
 
-    document.querySelector("#add-to-favorites").addEventListener("click", updateMovieListWithPatchRequest);
-    document.querySelector("#one-star").addEventListener("click", updateOneStarMovieRatingWithPatchRequest);
-    document.querySelector("#two-star").addEventListener("click", updateTwoStarMovieRatingWithPatchRequest);
-    document.querySelector("#three-star").addEventListener("click", updateThreeStarMovieRatingWithPatchRequest);
-    document.querySelector("#four-star").addEventListener("click", updateFourStarMovieRatingWithPatchRequest);
-    document.querySelector("#five-star").addEventListener("click", updateFiveStarMovieRatingWithPatchRequest);
+    // FAVORITES PANEL
+
+    if (document.querySelector("#favorites-panel").contains(document.querySelector("#delete-from-favorites"))) {
+        document.querySelector("#delete-from-favorites").addEventListener("click", deleteMovieFromFavorites);
+    }
+
+    if (document.querySelector("#favorites-panel").contains(document.querySelector("#add-to-favorites"))) {
+        document.querySelector("#add-to-favorites").addEventListener("click", updateMovieListWithPatchRequest);
+    }
+
+    // RATINGS PANEL
+
+    if (document.querySelector("#review-panel").contains(document.querySelector("#one-star"))) {
+        document.querySelector("#one-star").addEventListener("click", updateOneStarMovieRatingWithPatchRequest);
+        document.querySelector("#two-star").addEventListener("click", updateTwoStarMovieRatingWithPatchRequest);
+        document.querySelector("#three-star").addEventListener("click", updateThreeStarMovieRatingWithPatchRequest);
+        document.querySelector("#four-star").addEventListener("click", updateFourStarMovieRatingWithPatchRequest);
+        document.querySelector("#five-star").addEventListener("click", updateFiveStarMovieRatingWithPatchRequest);
+    }
 
     function retrievePointValueOffUserObject (movieGenre) {
         if (movieGenre === "horror") {
@@ -158,20 +173,29 @@
             .catch(alertUserOfFailedRatingFetch);
     }
 
-    function checkIfMovieExistsInUserFavorites() {
-        fetch(usernameId + "/get/" + movieId).then((response) => {
-            response.json().then(data  => {
-                movieExistsInUserFavorites = data;
-            })
-        })
-    }
+    // function checkIfMovieExistsInUserFavorites() {
+    //     fetch(usernameId + "/get/" + movieId).then((response) => {
+    //         response.json().then(data  => {
+    //             movieExistsInUserFavorites = data;
+    //         })
+    //     })
+    // }
 
-    function checkIfMovieExistsInUserRatings() {
-        fetch(usernameId + "/get/" + movieId + "/rating").then(response => {
-            response.json().then(data => {
-                movieExistsInUserRatings = data;
-            })
-        })
+    // function checkIfMovieExistsInUserRatings() {
+    //     fetch(usernameId + "/get/" + movieId + "/rating").then(response => {
+    //         response.json().then(data => {
+    //             movieExistsInUserRatings = data;
+    //         })
+    //     })
+    // }
+
+    function deleteMovieFromFavorites() {
+        console.log("hello");
+        fetch("/movies/" + usernameId + "/delete/" + movieId, {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' }
+        }).then(alertUserMovieDeletedFromFavorites)
+            .catch(alertUserMovieFailedToDelete);
     }
 
     function removeRatingElementsFromPage() {
@@ -179,15 +203,23 @@
     }
 
     function alertUserOfFailedRatingFetch() {
-        document.querySelector("#review-warning").innerHTML = "<p>Rating failed. Try again.</p>"
+        document.querySelector("#review-warning").innerHTML = "<p>Rating failed. Try again.</p>";
     }
 
     function removeFavoritesButtonFromPage() {
-        document.querySelector("#favorites-panel").innerHTML = "<p>Movie added to favorites list.</p>"
+        document.querySelector("#favorites-panel").innerHTML = "<p>Movie added to favorites list.</p>";
     }
 
     function alertUserOfFailedFavoritesFetch() {
-        document.querySelector("#favorites-warning").innerHTML = "<p>Movie failed to add. Try again</p>"
+        document.querySelector("#favorites-warning").innerHTML = "<p>Movie failed to add. Try again</p>";
+    }
+
+    function alertUserMovieDeletedFromFavorites() {
+        document.querySelector("#favorites-panel").innerHTML ="<p>Movie deleted from favorites</p>";
+    }
+
+    function alertUserMovieFailedToDelete() {
+        document.querySelector("#favorites-panel").innerHTML ="<p>Movie failed to delete. Try again.</p>";
     }
 
 

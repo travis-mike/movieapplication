@@ -1,9 +1,6 @@
 package com.example.movieapplication.controller;
 
-import com.example.movieapplication.model.Movie;
-import com.example.movieapplication.model.MovieScore;
-import com.example.movieapplication.model.User;
-import com.example.movieapplication.model.UserWithRoles;
+import com.example.movieapplication.model.*;
 import com.example.movieapplication.repository.Movies;
 import com.example.movieapplication.service.UserDetailsLoader;
 import com.mashape.unirest.http.HttpResponse;
@@ -40,12 +37,19 @@ public class MovieController {
 
         String[] movieUrlStringArray = movie.split("-");
         Long movieUrlLongId = Long.parseLong(movieUrlStringArray[0]);
+        User userWithMovieList = null;
+        User userWithRatingsList = null;
+        boolean isInUserFavoritesList = false;
+        boolean isInUserRatingsList = false;
         Optional<Movie> foundOptionalMovie = movies.findById(movieUrlLongId);
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserWithRoles) {
             User user = userDetailsLoader.loadUserThroughObject(principal);
+            userWithMovieList = userDetailsLoader.loadUserWithMovieList(user.getUsername());
+            userWithRatingsList = userDetailsLoader.loadUserWithRatingList(user.getUsername());
             model.addAttribute("user", user);
         }
+
 
         if (!foundOptionalMovie.isPresent()) {
 
@@ -75,7 +79,30 @@ public class MovieController {
 
         } else {
 
+
             Movie foundMovie = foundOptionalMovie.get();
+
+            if (userWithMovieList != null) {
+                for (Movie movieObject : userWithMovieList.getUserMovieList()) {
+                    if (movieObject.getId() == foundMovie.getId()) {
+                        isInUserFavoritesList = true;
+
+                    }
+                }
+            }
+
+            if (userWithRatingsList != null) {
+                for (MovieRating movieRating : userWithRatingsList.getMovieRatings()) {
+                    System.out.println("Movie Rating id " + movieRating.getMovieId());
+                    System.out.println("Id " + movieRating.getId());
+                    if (movieRating.getMovieId().equals(foundMovie.getId())) {
+                        isInUserRatingsList = true;
+                    }
+                }
+            }
+
+            model.addAttribute("isInUserRatingsList", isInUserRatingsList);
+            model.addAttribute("isInUserFavoritesList", isInUserFavoritesList);
             model.addAttribute("movie", foundMovie);
 
             return "movie-page";

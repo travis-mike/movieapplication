@@ -7,10 +7,7 @@ import com.example.movieapplication.service.MovieService;
 import com.example.movieapplication.service.UserDetailsLoader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -65,5 +62,22 @@ public class MoviesDBController {
             }
         }
         return ResponseEntity.ok(movieIsInUserRatings);
+    }
+
+    @DeleteMapping("/{username}/delete/{movieId}")
+    public ResponseEntity<?> deleteMovieFromFavorites (@PathVariable String username, @PathVariable Long movieId) {
+        User user = userDetailsLoader.loadUserWithMovieList(username);
+        if (user == null) {
+            ResponseEntity.badRequest().build();
+        }
+        Optional<Movie> movieOptional = movieService.findById(movieId);
+        if (movieOptional.isPresent()) {
+            List<Movie> userMovieList = user.getUserMovieList();
+            Movie movie = movieOptional.get();
+            userMovieList.remove(movie);
+            user.setUserMovieList(userMovieList);
+        }
+        userDetailsLoader.saveUser(user);
+        return ResponseEntity.ok("Movie deleted");
     }
 }
